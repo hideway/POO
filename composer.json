@@ -1,0 +1,16 @@
+{
+    "name": "itoons/simply",
+    "authors": [
+        {
+            "name": "Smart4U",
+            "email": "email4webdev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4":{
+            "App\\": "app/",
+            "Simply\\": "src/simply/"
+        }
+    },
+    "require": {}
+}

@@ -43,7 +43,7 @@ class SeedPostTable extends AbstractSeed
 
         /** ### Medias Seed ### */
         $medias  = [];
-        $posts = array_map( // Select categories for the foreign key
+        $posts = array_map( // Select posts for the foreign key
             function ($post) { return $post['id']; },
             $this->fetchAll('SELECT id FROM posts')
         );
@@ -63,7 +63,7 @@ class SeedPostTable extends AbstractSeed
 
         /** ### Comments Seed ### */
         $comments  = [];
-        $posts = array_map( // Select categories for the foreign key
+        $posts = array_map( // Select posts for the foreign key
             function ($post) { return $post['id']; },
             $this->fetchAll('SELECT id FROM posts')
         );

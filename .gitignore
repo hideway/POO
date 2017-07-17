@@ -1,6 +1,7 @@
 .env
 /vendor/
+/storage/logs/
 /storage/cache/
-/storage/logs/*.log
+/storage/uploads/
 
 .idea/

@@ -12,5 +12,8 @@
             "Simply\\": "src/simply/"
         }
     },
-    "require": {}
+    "require": {
+        "robmorgan/phinx": "^0.8.1",
+        "fzaninotto/Faker": "^1.6"
+    }
 }

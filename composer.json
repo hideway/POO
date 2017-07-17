@@ -14,6 +14,7 @@
     },
     "require": {
         "robmorgan/phinx": "^0.8.1",
-        "fzaninotto/Faker": "^1.6"
+        "fzaninotto/Faker": "^1.6",
+        "symfony/dotenv": "^3.3"
     }
 }

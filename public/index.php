@@ -12,12 +12,15 @@
  */
 define('DS', DIRECTORY_SEPARATOR);
 define('BASE', dirname(__DIR__).DS);
+define('STORAGE', BASE.'storage/');
+define('CONFIG', BASE.'config/');
 define('APP', BASE.'app/');
-
 
 /**
  * Bootstrap file to load the composer autoloader
  */
 require APP.'bootstrap.php';
+
+$config = require APP.'config.php';
 
 ?>

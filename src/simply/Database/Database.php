@@ -2,7 +2,7 @@
 
 namespace Simply\Database;
 
-class Connector {
+class Database {
 
     private $pdo;
     private $db_name;

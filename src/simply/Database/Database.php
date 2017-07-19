@@ -41,4 +41,38 @@ class Connector {
         return $this->pdo;
     }
 
+    public function fetch(string $query, array $params = [], string $entity = null)
+    {
+        return $this->query($query, $params, $entity)->fetch();
+    }
+
+    public function fetchAll(string $query, array $params = [], string $entity = null): array
+    {
+        return $this->query($query, $params, $entity)->fetchAll();
+    }
+
+    public function fetchColumn(string $query, array $params = [], string $entity = null): string
+    {
+        return $this->query($query, $params, $entity)->fetchColumn();
+    }
+
+    public function query(string $query, array $params = [], string $entity = null): \PDOStatement
+    {
+        if (count($params) === 0) {
+            $query = $this->getPDO()->query($query);
+        } else {
+            $query = $this->getPDO()->prepare($query);
+            $query->execute($params);
+        }
+        if ($entity) {
+            $query->setFetchMode(\PDO::FETCH_CLASS, $entity);
+        }
+        return $query;
+    }
+
+    public function lastInsertId(): ?int
+    {
+        return $this->getPDO()->lastInsertId();
+    }
+
 }

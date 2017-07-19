@@ -22,14 +22,13 @@ return [
     'config' => $config,
 
     // Database
-    \Simply\Database\Connector::class => object()->constructor(
+    \Simply\Database\Database::class => object()->constructor(
+        $config->db_name,
         $config->db_host,
         $config->db_port,
-        $config->db_name,
         $config->db_user,
         $config->db_pass,
         $config->db_options
     ),
-    'db' => get(\Simply\Database\Connector::class),
-
+    'db' => get(\Simply\Database\Database::class)
 ];

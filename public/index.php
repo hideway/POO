@@ -21,6 +21,7 @@ define('APP', BASE.'app/');
  */
 require APP.'bootstrap.php';
 
-$config = require APP.'config.php';
+$config = require APP.'kernel.php';
+
 
 ?>

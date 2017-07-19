@@ -15,6 +15,7 @@
     "require": {
         "robmorgan/phinx": "^0.8.1",
         "fzaninotto/Faker": "^1.6",
-        "symfony/dotenv": "^3.3"
+        "symfony/dotenv": "^3.3",
+        "php-di/php-di": "^5.4"
     }
 }

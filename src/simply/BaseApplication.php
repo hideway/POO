@@ -28,8 +28,8 @@ abstract class BaseApplication {
         $builder = new ContainerBuilder();
         $builder->addDefinitions($kernel);
         $container = $builder->build();
-        $container->set('app', $container);
-        $this->app = $container->get('app');
+        $container->set('App', $container);
+        $this->app = $container->get('App');
     }
 
     public abstract function run(): void;

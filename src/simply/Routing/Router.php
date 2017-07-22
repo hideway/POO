@@ -13,6 +13,7 @@ use Simply\Exception\MethodNotAllowedException;
 class Router {
 
     protected $app;
+    protected static $config;
 
 
     /**
@@ -21,6 +22,7 @@ class Router {
      */
     public function __construct($app) {
         $this->app = $app;
+        static::$config = $this->app->get('Config');
     }
 
     /**
@@ -70,6 +72,51 @@ class Router {
                 break;
         }
     }
+
+    /**
+     * @param string $path
+     * @param string $text
+     * @param bool $base
+     * @return void
+     */
+    public static function url(string $path, string $text, bool $base = false) : void {
+        echo ($base) ? '<a href="' . static::$config->url . '/' . $path . '">' . $text . '</a>' : '<a href="'. $path .'">' . $text . '</a>';
+    }
+
+    /**
+     * @param string $name
+     * @param string $text
+     * @param array $vars
+     * @param bool $base
+     * @return void
+     */
+    public static function link(string $name, string $text, array $vars = [], bool $base = false) : void {
+
+        $routes = fileUnserialized(static::$config->cachedRoutesFile);
+        $routesList = array_merge($routes['GET'], $routes['POST']);
+
+        foreach ($routesList as $route => $parameters){
+            if($parameters['name'] === $name){
+
+                $elementsOfUri = explode(':', trim($parameters['uri'], ':'));
+                foreach ($vars as $k => $v){
+                    foreach ($elementsOfUri as $key => $element){
+                        if($element === $k) {
+                            $elementsOfUri[$key] = $v;
+                        } else {
+                            $elementsOfUri[$key] = $element;
+                        }
+                    }
+                }
+                $uri = implode($elementsOfUri);
+            }
+
+        }
+
+        echo ($base) ? '<a href="' . static::$config->url . $uri . '">' . $text . '</a>' : '<a href="'. $uri .'">' . $text . '</a>';
+
+    }
+
 
 
 }

@@ -1,3 +1,3 @@
 <?php
 
-$route->addRoute('GET', '/', 'HomeController@index');
+$route->get('/', 'HomeController@index', [], 'homepage');

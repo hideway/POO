@@ -30,11 +30,12 @@ class RouteCollector
      * @param string $controllerAction
      * @param array|null $params
      */
-    public function addRoute(string $method, string $pattern, string $controllerAction, ?array $params = null) : void {
+    public function addRoute(string $method, string $pattern, string $controllerAction, ?array $params = null, ?string $name = null) : void {
         $method = $this->routeGenerator->setMethod($method);
+        $uri = $this->routeGenerator->setURI($pattern);
         [$pattern, $params] = $this->routeGenerator->setPattern($pattern, $params);
         [$controller, $action] = $this->routeGenerator->setControllerAndAction($controllerAction);
-        $this->routeCollection[$method][$pattern] = ['controller' => $controller, 'action' => $action, 'parameters' => $params];
+        $this->routeCollection[$method][$pattern] = ['name' => $name, 'uri' => $uri, 'method' => $method,'controller' => $controller, 'action' => $action, 'parameters' => $params];
     }
 
     /**
@@ -42,8 +43,8 @@ class RouteCollector
      * @param string $controllerAction
      * @param array|null $params
      */
-    public function get(string $pattern, string $controllerAction, ?array $params = null) :void {
-        $this->addRoute('GET', $pattern, $controllerAction, $params);
+    public function get(string $pattern, string $controllerAction, ?array $params = null, ?string $name = null) :void {
+        $this->addRoute('GET', $pattern, $controllerAction, $params, $name);
     }
 
     /**
@@ -51,8 +52,8 @@ class RouteCollector
      * @param string $controllerAction
      * @param array|null $params
      */
-    public function post(string $pattern, string $controllerAction, ?array $params = null) : void {
-        $this->addRoute('POST', $pattern, $controllerAction, $params);
+    public function post(string $pattern, string $controllerAction, ?array $params = null, ?string $name = null) : void {
+        $this->addRoute('POST', $pattern, $controllerAction, $params, $name);
     }
 
     /**

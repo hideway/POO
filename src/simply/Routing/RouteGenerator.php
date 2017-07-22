@@ -17,11 +17,28 @@ class RouteGenerator {
     }
 
     /**
+     * @param string $name
+     * @return string
+     */
+    public function setName(?string $name): ?string {
+        return $name;
+    }
+
+    /**
+     * @param string $uri
+     * @return string
+     */
+    public function setURI(string $uri) : string {
+        return preg_replace('#({)([a-z]+)(})#', ':$2:', $uri);
+    }
+
+    /**
      * @param string $pattern
      * @param array|null $params
      * @return array
      */
     public function setPattern(string $pattern, ?array $params = null) : array {
+
         $pattern = str_replace('/', '\\/', $pattern);
         if(is_iterable($params)) {
             foreach ($params as $keyVariables => $variable) {
@@ -30,6 +47,7 @@ class RouteGenerator {
 
             $parametersBetweenColon = preg_replace('#({)([a-z]+)(})#', ':$2:', $pattern);
             $elementsOfUrlInArray = explode(':', trim($parametersBetweenColon, ':'));
+
 
             foreach ($elementsOfUrlInArray as $key => $element){
                 foreach ($params as $keyVariables => $variable){
@@ -56,10 +74,6 @@ class RouteGenerator {
             throw new \AssertionError('This string ('.$controllerAction.') does not contains an @');
         }
         return explode('@', $controllerAction);
-    }
-
-    public function setName(string $name){
-        return $name;
     }
 
 }

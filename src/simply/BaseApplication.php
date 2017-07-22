@@ -3,6 +3,7 @@
 namespace Simply;
 
 use DI\ContainerBuilder;
+use Simply\Exception\Exception;
 
 /**
  * Class BaseApplication
@@ -18,7 +19,7 @@ abstract class BaseApplication {
      */
     public function __construct(array $kernel = []) {
         $this->setContainer($kernel);
-        $this->setErrorHandler($this->app->get('config')->debug);
+        $this->setErrorHandler($this->app->get('Config')->debug);
     }
 
     /**
@@ -37,7 +38,7 @@ abstract class BaseApplication {
         error_reporting(E_ALL);
 
         Exception::setTypeOfDebug($debug);
-        set_error_handler('');
+        set_error_handler('\Simply\Error\Error::errorHandler');
         set_exception_handler('\Simply\Exception\Exception::exceptionHandler');
     }
 

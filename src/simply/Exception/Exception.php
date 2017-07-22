@@ -31,7 +31,7 @@ class Exception extends \RuntimeException {
             echo '<p>Stack Trace: <pre>'. $exception->getTraceAsString() .'</pre></p>';
             echo '<p>Throw in ['.$exception->getFile().'] on line ' .$exception->getLine(). '.</p>';
         } else {
-            ini_set('error_log', STORAGE.'/logs/'. date('d-m-Y' ) . '.log');
+            ini_set('error_log', STORAGE.'logs/'. date('d-m-Y' ) . '.log');
             $message = 'Uncaught exception: ' . get_class($exception);
             $message .= ' Message: ' . $exception->getMessage();
             $message .= "\nStack Trace: " . $exception->getTraceAsString();

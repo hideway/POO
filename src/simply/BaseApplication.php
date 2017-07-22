@@ -18,6 +18,7 @@ abstract class BaseApplication {
      */
     public function __construct(array $kernel = []) {
         $this->setContainer($kernel);
+        $this->setErrorHandler($this->app->get('config')->debug);
     }
 
     /**
@@ -30,6 +31,14 @@ abstract class BaseApplication {
         $container = $builder->build();
         $container->set('App', $container);
         $this->app = $container->get('App');
+    }
+
+    private function setErrorHandler(bool $debug): void {
+        error_reporting(E_ALL);
+
+        Exception::setTypeOfDebug($debug);
+        set_error_handler('');
+        set_exception_handler('\Simply\Exception\Exception::exceptionHandler');
     }
 
     public abstract function run(): void;

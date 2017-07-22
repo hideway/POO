@@ -3,6 +3,7 @@
 namespace App\Frontend;
 
 use Simply\BaseApplication;
+use Simply\Routing\Router;
 
 /**
  * Entry point of frontend environment
@@ -12,10 +13,12 @@ use Simply\BaseApplication;
 class Frontend extends BaseApplication
 {
 
-    protected $app;
+    public function run(): void {
 
-    public function run(): void
-    {
+        $this->app->set('Router', new Router($this->app->get('App')));
+        $this->app->get('Router')->callController($this->app->get('Router')->getCurrentRouteInfo($this->app->get('Router')->getRoutes()), $this->app);
+
 
     }
+
 }

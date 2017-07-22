@@ -43,7 +43,7 @@ function fileUnserialized($filePath) : array {
  */
 function dispatcher(callable $routeDefinitionCallback, $route) : array {
 
-    $cacheRouteCollection = STORAGE.'cache/'.GATE.'_cached_route_collection';
+    $cacheRouteCollection = STORAGE.'cache/routing/'.GATE.'_cached_route_collection';
 
     if(!file_exists($cacheRouteCollection)){
 

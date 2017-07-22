@@ -93,7 +93,12 @@ class Router {
     public static function link(string $name, string $text, array $vars = [], bool $base = false) : void {
 
         $routes = fileUnserialized(static::$config->cachedRoutesFile);
-        $routesList = array_merge($routes['GET'], $routes['POST']);
+
+        if(isset($routes['GET']) && isset($route['POST'])) {
+            $routesList = array_merge($routes['GET'], $routes['POST']);
+        } else {
+            $routesList = $routes['GET'];
+        }
 
         foreach ($routesList as $route => $parameters){
             if($parameters['name'] === $name){

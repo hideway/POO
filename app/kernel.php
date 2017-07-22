@@ -50,6 +50,22 @@ return [
     ),
     'Database' => get(\Simply\Database\Database::class),
 
+    // View
+    'TwigLoader' => object('\Twig_Loader_Filesystem')->constructor(
+        array($config->layoutFile, $config->folderView)
+    ),
+    'Twig' => object('\Twig_Environment')->constructor(
+        get('TwigLoader'),
+        array(
+            'cache' => $config->cacheView,
+            'debug' => $config->debug
+        )
+    ),
+    \Simply\View\ViewTwig::class => object()->constructor(get('TwigLoader'), get('Twig')),
+    'ViewTwig' => get(\Simply\View\ViewTwig::class),
+    \Simply\View\ViewInterface::class => \DI\get('ViewTwig'),
+    'ViewInterface' => get (\Simply\View\ViewInterface::class),
+
     // Exception
     \Simply\Exception\ViewFileNotFoundException::class => object(),
     \Simply\Exception\MethodNotAllowedException::class => object(),

@@ -33,23 +33,24 @@ class RouteDispatcher
         foreach ($this->routesCollection[$currentRoute->method] as $pattern => $parameters){
 
             if($params = $this->match($pattern, $currentRoute)){
-                if(count($params) > 1){
-                    $i = 1;
+                array_shift($params);
+                if(count($params) > 0){
+                    $i = 0;
                     foreach ($parameters['parameters'] as $k => $v){
                         $parameters['parameters'][$k] = $params[$i];
                         $i++;
                     }
                     $currentRoute->setRequest($parameters['parameters']);
+
                 }
 
                 $controller = '\\App\\'.ucfirst(GATE).'\\Controllers\\'.$parameters['controller'];
                 $action = $parameters['action'].'Action';
-
                 if(!method_exists($controller,$action)){
                     return [static::METHOD_NOT_ALLOWED, $action];
                 }
 
-                return [static::FOUND, $controller, $action, $currentRoute->request];
+                return [static::FOUND, $controller, $action, ($parameters['parameters']) ? $parameters['parameters'] : null];
             }
 
         }

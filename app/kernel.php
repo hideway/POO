@@ -66,6 +66,9 @@ return [
     \Simply\View\ViewInterface::class => \DI\get('ViewTwig'),
     'ViewInterface' => get (\Simply\View\ViewInterface::class),
 
+    // Mail
+    \Swift_Mailer::class => object(),
+
     // Error
     \Simply\Error\Error::class => object(),
 
@@ -74,8 +77,7 @@ return [
     \Simply\Exception\ViewFileNotFoundException::class => object(),
     \Simply\Exception\FileNotFoundException::class => object(),
     \Simply\Exception\MethodNotAllowedException::class => object(),
-    \Simply\Exception\NotFoundException::class => object(),
-
+    \Simply\Exception\NotFoundException::class => object()
 
 
 ];

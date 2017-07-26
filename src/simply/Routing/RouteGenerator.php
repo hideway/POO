@@ -38,9 +38,9 @@ class RouteGenerator {
      * @return array
      */
     public function setPattern(string $pattern, ?array $params = null) : array {
-
         $pattern = str_replace('/', '\\/', $pattern);
-        if(is_iterable($params)) {
+        if(!empty($params) and is_iterable($params)) {
+
             foreach ($params as $keyVariables => $variable) {
                 $variables[$keyVariables] = $variable;
             }
@@ -55,7 +55,7 @@ class RouteGenerator {
                         $elementsOfUrlInArray[$key] = '('.$variable.')';
                     }
                 }
-            }
+            };
 
             return [implode($elementsOfUrlInArray), $params];
 

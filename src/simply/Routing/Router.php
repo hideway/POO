@@ -2,7 +2,6 @@
 
 namespace Simply\Routing;
 
-use Simply\BaseController;
 use Simply\Exception\NotFoundException;
 use Simply\Exception\MethodNotAllowedException;
 
@@ -22,7 +21,7 @@ class Router {
      */
     public function __construct($app) {
         $this->app = $app;
-        static::$config = $this->app->get('Config');
+        static::$config = $app->get('Config');
     }
 
     /**
@@ -47,21 +46,28 @@ class Router {
 
     /**
      * @param $routeInfo
-     * @param $app
-     * @return BaseController
+     * @return mixed
      */
-    Public function callController($routeInfo, $app) : BaseController {
+    Public function callController($routeInfo) {
         switch ($routeInfo[0]) {
             case 200:
-
                 $controller = $routeInfo[1];
                 $action = $routeInfo[2];
                 $parameters = $routeInfo[3];
 
-                if(!is_null($parameters)){
-                    return (new $controller($app, $controller, $action, $parameters))->$action(...array_values($parameters));
+                $reflector = new \ReflectionClass($controller);
+                $construct = $this->setConstructorController($reflector);
+                $params = $this->setConstructorMethod($reflector, $action, $parameters);
+
+                if($construct && $params){
+                    return (new $controller(...$construct))->$action(...$params);
+                } elseif ($construct) {
+                    return (new $controller(...$construct))->$action();
+                } elseif ($params) {
+                    return (new $controller())->$action(...$params);
+                } else {
+                    return (new $controller())->$action();
                 }
-                return (new $controller($app, $controller, $action, $parameters))->$action();
 
                 break;
             case 404:
@@ -72,6 +78,59 @@ class Router {
                 break;
         }
     }
+
+    /**
+     * @param \ReflectionClass $reflector
+     * @return array|bool
+     */
+    protected function setConstructorController(\ReflectionClass $reflector){
+
+        $dependenciesClass = [];
+        foreach ($reflector->getConstructor()->getParameters() as $params) {
+            // dependencies for the constructor
+            if(! is_null($params->getType())){
+                $inject = $params->getClass()->getName();
+                $dependenciesClass[] = new $inject;
+            } else {
+                $dependenciesClass[] = $params;
+            }
+        }
+
+        if(!empty($dependenciesClass)){
+            return $dependenciesClass;
+        }
+        return false;
+
+    }
+
+    /**
+     * @param \ReflectionClass $reflector
+     * @param $action
+     * @param $parameters
+     * @return array|bool
+     */
+    protected function setConstructorMethod(\ReflectionClass  $reflector, $action, $parameters) {
+
+        $dependenciesMethod = [];
+        foreach ($reflector->getMethod($action)->getParameters() as $params){
+            // dependencies for this method
+            if(! is_null($params->getType())){
+                $inject = $params->getClass()->getName();
+                $dependenciesMethod[] = new $inject;
+            }
+        }
+
+        if(!empty($parameters)){
+            array_push($dependenciesMethod, $parameters);
+        }
+
+        if(!empty($dependenciesMethod)){
+            return $dependenciesMethod;
+        }
+        return false;
+
+    }
+
 
     /**
      * @param string $path
@@ -105,7 +164,7 @@ class Router {
 
                 $elementsOfUri = explode(':', trim($parameters['uri'], ':'));
                 foreach ($vars as $k => $v){
-                    foreach ($elementsOfUri as $key => $element){
+                    foreach ($elementsOfUri as $key => $element) {
                         if($element === $k) {
                             $elementsOfUri[$key] = $v;
                         } else {

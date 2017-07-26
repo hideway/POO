@@ -19,8 +19,7 @@ class Route
      * Route constructor.
      * @param Request $request
      */
-    public function __construct(Request $request)
-    {
+    public function __construct(Request $request) {
         $this->method = $request->method();
         $this->uri = $request->uri();
         $this->request = $request->request();
@@ -32,8 +31,5 @@ class Route
     public function setRequest(array $request) : void {
         $this->request = $request;
     }
-
-
-
 
 }
